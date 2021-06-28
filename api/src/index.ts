@@ -1,14 +1,12 @@
-import express from "express";
+import { ApolloServer } from "apollo-server";
 import { HOST, PORT } from "./config";
 
 function main() {
-  const app = express();
+  const server = new ApolloServer({});
 
-  app.get("/", (_, res) => res.send("Hello, world!"));
-
-  app.listen(PORT, HOST, () =>
-    console.log(`Listening on http://${HOST}:${PORT}/`)
-  );
+  server
+    .listen(PORT, HOST)
+    .then(({ url }) => console.log(`Listening at ${url}`));
 }
 
 main();
