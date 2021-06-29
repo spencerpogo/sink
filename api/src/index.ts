@@ -1,4 +1,5 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from "apollo-server-express";
+import express from "express";
 import path from "path";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -23,9 +24,12 @@ async function main() {
   });
   const server = new ApolloServer({ schema });
 
-  server
-    .listen(PORT, HOST)
-    .then(({ url }) => console.log(`Listening at ${url}`));
+  const app = express();
+  server.applyMiddleware({ app });
+
+  app.listen({ host: HOST, port: PORT }, () =>
+    console.log(`Listening on http://${HOST}:${PORT}${server.graphqlPath}`)
+  );
 }
 
 main();
