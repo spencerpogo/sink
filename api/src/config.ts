@@ -6,3 +6,11 @@ export const DATABASE_URL: string = env
   .get("DATABASE_URL")
   .required()
   .asUrlString();
+export const GITHUB_CLIENT_ID: string = env
+  .get("GITHUB_CLIENT_ID")
+  .required()
+  .asString();
+export const GITHUB_CLIENT_SECRET: string = env
+  .get("GITHUB_CLIENT_SECRET")
+  .required()
+  .asString();
