@@ -1,0 +1,10 @@
+{
+  "type": "postgres",
+  "username": "sink",
+  "password": "cool",
+  "entities": ["src/models/*.ts"],
+  "migrations": ["src/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
+}
