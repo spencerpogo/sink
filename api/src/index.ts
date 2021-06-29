@@ -52,7 +52,12 @@ async function main() {
   const schema = await buildSchema({
     resolvers: [HelloResolver, UserResolver],
   });
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({
+    schema,
+    context: ({ req }) => {
+      req;
+    },
+  });
   server.applyMiddleware({ app });
 
   app.listen({ host: HOST, port: PORT }, () =>
