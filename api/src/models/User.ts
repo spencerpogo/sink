@@ -8,10 +8,10 @@ export class User extends BaseEntity {
   @Field()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   githubId: number;
 
-  @Column()
+  @Column({ unique: true })
   @Field()
   name: string;
 }
