@@ -1,7 +1,15 @@
-import { Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import LoginButton from "../components/LoginButton";
 
 export function Index() {
-  return <Heading>Hello, world!</Heading>;
+  return (
+    <Flex justify="center" mt="2rem">
+      <Box>
+        <Heading>Hello, world!</Heading>
+        <LoginButton />
+      </Box>
+    </Flex>
+  );
 }
 
 export default Index;
