@@ -3,7 +3,7 @@ import { AppProps } from "next/dist/next-server/lib/router/router";
 import { Chakra } from "../chakra";
 
 const client = new ApolloClient({
-  uri: process.env.NODE_PUBLIC_API_URL,
+  uri: process.env.NEXT_PUBLIC_API_URL + "/graphql",
   cache: new InMemoryCache(),
 });
 
