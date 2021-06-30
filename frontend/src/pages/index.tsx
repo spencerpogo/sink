@@ -5,7 +5,7 @@ export function Index() {
   return (
     <Flex justify="center" mt="2rem">
       <Box>
-        <Heading>Hello, world!</Heading>
+        <Heading>Sink</Heading>
         <LoginButton />
       </Box>
     </Flex>
