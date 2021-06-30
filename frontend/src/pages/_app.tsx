@@ -1,11 +1,13 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { AppProps } from "next/dist/next-server/lib/router/router";
+import { Chakra } from "../chakra";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider>
+    <Chakra cookies={pageProps.cookies}>
       <Component {...pageProps} />
-    </ChakraProvider>
+    </Chakra>
   );
 }
 
 export default MyApp;
+export { getServerSideProps } from "../chakra";
