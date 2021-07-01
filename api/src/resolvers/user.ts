@@ -143,12 +143,14 @@ export class UserResolver {
     const existingUser = await User.findOne({ githubId });
     if (existingUser) {
       // log them in
+      ctx.req.session.userId = existingUser.id;
       return { user: existingUser };
     }
 
     // register new user
     const newUser = User.create({ name, githubId });
     await newUser.save();
+    ctx.req.session.userId = newUser.id;
     return { user: newUser };
   }
 }

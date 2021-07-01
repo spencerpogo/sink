@@ -5,5 +5,6 @@ export type MyContext = {
 declare module "express-session" {
   interface SessionData {
     authState?: string;
+    userId?: number;
   }
 }
