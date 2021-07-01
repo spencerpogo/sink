@@ -8,10 +8,12 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { v4 as uuidv4 } from "uuid";
 import { version as serverVersion } from "../../package.json";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "../config";
+import { isAuth } from "../middleware/isAuth";
 import { User } from "../models/User";
 import { MyContext } from "../types";
 
@@ -152,5 +154,11 @@ export class UserResolver {
     await newUser.save();
     req.session.userId = newUser.id;
     return { user: newUser };
+  }
+
+  @Query(() => User)
+  @UseMiddleware(isAuth)
+  async me(@Ctx() { req }: MyContext): Promise<User> {
+    return User.findOneOrFail(req.session.userId);
   }
 }
