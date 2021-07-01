@@ -19,10 +19,28 @@ export type Hello = {
   message: Scalars['String'];
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  error?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  githubLogin: LoginResponse;
+};
+
+
+export type MutationGithubLoginArgs = {
+  state: Scalars['String'];
+  code: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   greet: Hello;
   genGitHubLoginURL: Scalars['String'];
+  me: User;
 };
 
 
@@ -33,6 +51,12 @@ export type QueryGreetArgs = {
 
 export type QueryGenGitHubLoginUrlArgs = {
   redirectUri: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  name: Scalars['String'];
 };
 
 export type GitHubLoginQueryVariables = Exact<{
