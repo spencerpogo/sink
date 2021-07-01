@@ -95,11 +95,11 @@ async function getGitHubInfo(
 export class UserResolver {
   @Query(() => String)
   genGitHubLoginURL(
-    @Ctx() ctx: MyContext,
+    @Ctx() { req }: MyContext,
     @Arg("redirectUri") redirectUri: string
   ) {
     const state = uuidv4();
-    ctx.req.session.authState = state;
+    req.session.authState = state;
     return (
       `${GITHUB_URL}/login/oauth/authorize?` +
       querystring.stringify({
@@ -113,7 +113,7 @@ export class UserResolver {
 
   @Mutation(() => LoginResponse)
   async githubLogin(
-    @Ctx() ctx: MyContext,
+    @Ctx() { req }: MyContext,
     @Arg("code") code: string,
     @Arg("state") state: string
   ): Promise<LoginResponse> {
@@ -121,11 +121,11 @@ export class UserResolver {
       return { error: "Missing paramaters" };
     }
 
-    if (ctx.req.session.authState != state) {
+    if (req.session.authState != state) {
       return { error: "State does not match" };
     }
     // Prevent duplicate login attempts
-    delete ctx.req.session.authState;
+    delete req.session.authState;
 
     let name, githubId;
     try {
@@ -143,14 +143,14 @@ export class UserResolver {
     const existingUser = await User.findOne({ githubId });
     if (existingUser) {
       // log them in
-      ctx.req.session.userId = existingUser.id;
+      req.session.userId = existingUser.id;
       return { user: existingUser };
     }
 
     // register new user
     const newUser = User.create({ name, githubId });
     await newUser.save();
-    ctx.req.session.userId = newUser.id;
+    req.session.userId = newUser.id;
     return { user: newUser };
   }
 }
