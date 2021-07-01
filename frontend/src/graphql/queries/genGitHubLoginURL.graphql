@@ -1,3 +1,3 @@
-query GitHubLogin($redirectUri: String!) {
+query genGitHubLoginURL($redirectUri: String!) {
   genGitHubLoginURL(redirectUri: $redirectUri)
 }

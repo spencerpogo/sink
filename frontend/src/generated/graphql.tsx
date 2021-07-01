@@ -59,47 +59,47 @@ export type User = {
   name: Scalars['String'];
 };
 
-export type GitHubLoginQueryVariables = Exact<{
+export type GenGitHubLoginUrlQueryVariables = Exact<{
   redirectUri: Scalars['String'];
 }>;
 
 
-export type GitHubLoginQuery = (
+export type GenGitHubLoginUrlQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'genGitHubLoginURL'>
 );
 
 
-export const GitHubLoginDocument = gql`
-    query GitHubLogin($redirectUri: String!) {
+export const GenGitHubLoginUrlDocument = gql`
+    query genGitHubLoginURL($redirectUri: String!) {
   genGitHubLoginURL(redirectUri: $redirectUri)
 }
     `;
 
 /**
- * __useGitHubLoginQuery__
+ * __useGenGitHubLoginUrlQuery__
  *
- * To run a query within a React component, call `useGitHubLoginQuery` and pass it any options that fit your needs.
- * When your component renders, `useGitHubLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGenGitHubLoginUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenGitHubLoginUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGitHubLoginQuery({
+ * const { data, loading, error } = useGenGitHubLoginUrlQuery({
  *   variables: {
  *      redirectUri: // value for 'redirectUri'
  *   },
  * });
  */
-export function useGitHubLoginQuery(baseOptions: Apollo.QueryHookOptions<GitHubLoginQuery, GitHubLoginQueryVariables>) {
+export function useGenGitHubLoginUrlQuery(baseOptions: Apollo.QueryHookOptions<GenGitHubLoginUrlQuery, GenGitHubLoginUrlQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GitHubLoginQuery, GitHubLoginQueryVariables>(GitHubLoginDocument, options);
+        return Apollo.useQuery<GenGitHubLoginUrlQuery, GenGitHubLoginUrlQueryVariables>(GenGitHubLoginUrlDocument, options);
       }
-export function useGitHubLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GitHubLoginQuery, GitHubLoginQueryVariables>) {
+export function useGenGitHubLoginUrlLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenGitHubLoginUrlQuery, GenGitHubLoginUrlQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GitHubLoginQuery, GitHubLoginQueryVariables>(GitHubLoginDocument, options);
+          return Apollo.useLazyQuery<GenGitHubLoginUrlQuery, GenGitHubLoginUrlQueryVariables>(GenGitHubLoginUrlDocument, options);
         }
-export type GitHubLoginQueryHookResult = ReturnType<typeof useGitHubLoginQuery>;
-export type GitHubLoginLazyQueryHookResult = ReturnType<typeof useGitHubLoginLazyQuery>;
-export type GitHubLoginQueryResult = Apollo.QueryResult<GitHubLoginQuery, GitHubLoginQueryVariables>;
+export type GenGitHubLoginUrlQueryHookResult = ReturnType<typeof useGenGitHubLoginUrlQuery>;
+export type GenGitHubLoginUrlLazyQueryHookResult = ReturnType<typeof useGenGitHubLoginUrlLazyQuery>;
+export type GenGitHubLoginUrlQueryResult = Apollo.QueryResult<GenGitHubLoginUrlQuery, GenGitHubLoginUrlQueryVariables>;

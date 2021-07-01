@@ -1,11 +1,12 @@
 import { Button, Icon, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { GoMarkGithub } from "react-icons/go";
-import { useGitHubLoginLazyQuery } from "../generated/graphql";
+import { useGenGitHubLoginUrlLazyQuery } from "../generated/graphql";
 
 export function LoginButton() {
   const [didQuery, setDidQuery] = useState(false);
-  const [getLoginURL, { loading, data, error }] = useGitHubLoginLazyQuery();
+  const [getLoginURL, { loading, data, error }] =
+    useGenGitHubLoginUrlLazyQuery();
 
   // SSR: Check for window object before querying
   useEffect(() => {
