@@ -130,9 +130,9 @@ export class UserResolver {
     let name, githubId;
     try {
       const { token } = await tokenFromCode(code);
-      const { name, githubId } = await getGitHubInfo(token);
-      name = name;
-      githubId = githubId;
+      const { name: cName, githubId: cId } = await getGitHubInfo(token);
+      name = cName;
+      githubId = cId;
     } catch (e) {
       if (e instanceof LoginError) {
         return { error: e.message };
