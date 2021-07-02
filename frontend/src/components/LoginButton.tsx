@@ -1,39 +1,36 @@
 import { Button, Icon, Spinner, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GoMarkGithub } from "react-icons/go";
 import { useGenGitHubLoginUrlLazyQuery } from "../generated/graphql";
 
 export function LoginButton() {
-  const [didQuery, setDidQuery] = useState(false);
   const [getLoginURL, { loading, data, error }] =
     useGenGitHubLoginUrlLazyQuery();
 
   // SSR: Check for window object before querying
   useEffect(() => {
-    console.log(didQuery, typeof window);
-    if (!didQuery && typeof window === "object") {
-      setDidQuery(true);
+    if (typeof window === "object" && !error && !loading && !data) {
       getLoginURL({
         variables: { redirectUri: window.location.origin + "/githubCallback" },
       });
     }
-  }, [didQuery, getLoginURL]);
+  }, [getLoginURL, loading, data, error]);
 
   return error ? (
     <Text>Oops, an error occurred: {String(error)}</Text>
   ) : (
     <Button
-      //isDisabled={LOADING}
+      isDisabled={loading}
       size="lg"
       leftIcon={
-        didQuery && !loading ? (
-          <Icon as={GoMarkGithub} w={8} h={8} />
+        loading ? (
+          <Spinner mr="0.5rem" /> // margin prevents width changes
         ) : (
-          <Spinner mr="0.5rem" /> // margin prevent width changes
+          <Icon as={GoMarkGithub} w={8} h={8} />
         )
       }
       onClick={() => {
-        if (data) {
+        if (data && data.genGitHubLoginURL) {
           window.location.href = data.genGitHubLoginURL;
         }
       }}
