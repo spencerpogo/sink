@@ -102,7 +102,6 @@ export class UserResolver {
   ) {
     const state = uuidv4();
     req.session.authState = state;
-    console.log(req.session);
     return (
       `${GITHUB_URL}/login/oauth/authorize?` +
       querystring.stringify({
@@ -124,7 +123,6 @@ export class UserResolver {
       return { error: "Missing paramaters" };
     }
 
-    console.log(req.session);
     if (req.session.authState != state) {
       return { error: "State does not match" };
     }
