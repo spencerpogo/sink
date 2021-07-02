@@ -1,28 +1,33 @@
 import { Text } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
-import { useEffect, useState } from "react";
+import { useGitHubLoginMutation } from "../generated/graphql";
+
+function Error({ children }) {
+  return <Text>Something went wrong while logging you in: {children}</Text>;
+}
 
 function CallbackHandler() {
-  const [didLogin, setDidLogin] = useState(false);
+  const [githubLogin, { data, loading, error }] = useGitHubLoginMutation();
   const router = useRouter();
-
   const { code, state } = router.query;
-  const paramsValid = Boolean(code) && Boolean(state);
 
-  useEffect(() => {
-    if (!didLogin && paramsValid) {
-      setDidLogin(true);
-      // TODO: Run login mutation
-    }
-  }, [didLogin, paramsValid]);
+  if (error) {
+    return <Error>{String(error.message)}</Error>;
+  }
 
-  if (!paramsValid) {
-    return (
-      <Text>
-        Something went wrong while logging you in: Missing code/state query
-        paramaters
-      </Text>
-    );
+  if (data && data.githubLogin.error) {
+    return <Error>{String(data.githubLogin.error)}</Error>;
+  }
+
+  if (data && data.githubLogin.user) {
+    return <Text>Hi {String(data.githubLogin.user.name)}</Text>;
+  }
+
+  if ((!loading && typeof code === "string") || typeof state === "string") {
+    console.log("calling");
+    githubLogin({
+      variables: { code: code as string, state: state as string },
+    });
   }
 
   return <Text>Loading...</Text>;

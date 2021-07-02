@@ -59,6 +59,24 @@ export type User = {
   name: Scalars['String'];
 };
 
+export type GitHubLoginMutationVariables = Exact<{
+  code: Scalars['String'];
+  state: Scalars['String'];
+}>;
+
+
+export type GitHubLoginMutation = (
+  { __typename?: 'Mutation' }
+  & { githubLogin: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'error'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name'>
+    )> }
+  ) }
+);
+
 export type GenGitHubLoginUrlQueryVariables = Exact<{
   redirectUri: Scalars['String'];
 }>;
@@ -70,6 +88,44 @@ export type GenGitHubLoginUrlQuery = (
 );
 
 
+export const GitHubLoginDocument = gql`
+    mutation GitHubLogin($code: String!, $state: String!) {
+  githubLogin(code: $code, state: $state) {
+    error
+    user {
+      id
+      name
+    }
+  }
+}
+    `;
+export type GitHubLoginMutationFn = Apollo.MutationFunction<GitHubLoginMutation, GitHubLoginMutationVariables>;
+
+/**
+ * __useGitHubLoginMutation__
+ *
+ * To run a mutation, you first call `useGitHubLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGitHubLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [gitHubLoginMutation, { data, loading, error }] = useGitHubLoginMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useGitHubLoginMutation(baseOptions?: Apollo.MutationHookOptions<GitHubLoginMutation, GitHubLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GitHubLoginMutation, GitHubLoginMutationVariables>(GitHubLoginDocument, options);
+      }
+export type GitHubLoginMutationHookResult = ReturnType<typeof useGitHubLoginMutation>;
+export type GitHubLoginMutationResult = Apollo.MutationResult<GitHubLoginMutation>;
+export type GitHubLoginMutationOptions = Apollo.BaseMutationOptions<GitHubLoginMutation, GitHubLoginMutationVariables>;
 export const GenGitHubLoginUrlDocument = gql`
     query genGitHubLoginURL($redirectUri: String!) {
   genGitHubLoginURL(redirectUri: $redirectUri)

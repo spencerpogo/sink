@@ -1,0 +1,9 @@
+mutation GitHubLogin($code: String!, $state: String!) {
+  githubLogin(code: $code, state: $state) {
+    error
+    user {
+      id
+      name
+    }
+  }
+}
