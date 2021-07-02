@@ -20,7 +20,7 @@ export function LoginButton() {
   }, [didQuery, getLoginURL]);
 
   return error ? (
-    <Text>Oops, an error occurred: {error}</Text>
+    <Text>Oops, an error occurred: {String(error)}</Text>
   ) : (
     <Button
       //isDisabled={LOADING}
