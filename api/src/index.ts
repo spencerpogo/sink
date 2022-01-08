@@ -29,6 +29,7 @@ async function main() {
   const redis = new IORedis({
     host: CONFIG.REDIS_HOST,
     port: Number(CONFIG.REDIS_PORT),
+    password: CONFIG.REDIS_PASSWORD,
   });
   app.use(
     session({
