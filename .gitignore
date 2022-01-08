@@ -105,3 +105,5 @@ dist
 
 # SQLite database
 *.sqlite
+*.sqlite-shm
+*.sqlite-wal
