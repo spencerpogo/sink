@@ -1,2 +1,6 @@
 { pkgs ? import <nixpkgs> { } }:
-pkgs.mkShell { nativeBuildInputs = with pkgs; [ nodejs-14_x nodePackages.yarn postgresql_13 ]; }
+let nodeVersion = pkgs.nodejs-17_x;
+in pkgs.mkShell {
+  nativeBuildInputs =
+    [ nodeVersion (pkgs.yarn.override { nodejs = nodeVersion; }) ];
+}
