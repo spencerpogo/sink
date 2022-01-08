@@ -1,8 +1,11 @@
 {
   "type": "better-sqlite3",
-  "entities": ["src/models/*.ts"],
-  "migrations": ["src/migrations/*.ts"],
+  "synchronize": false,
+  "logging": true,
+  "entities": ["dist/src/models/*.js"],
+  "migrations": ["dist/src/migrations/*.js"],
   "cli": {
+    "entitiesDir": "src/models",
     "migrationsDir": "src/migrations"
   }
 }
