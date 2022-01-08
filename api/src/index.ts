@@ -7,14 +7,7 @@ import path from "path";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-import {
-  DATABASE_URL,
-  HOST,
-  PORT,
-  REDIS_HOST,
-  REDIS_PORT,
-  SESSION_SECRET,
-} from "./config";
+import { CONFIG } from "./config.js";
 import { User } from "./models/User";
 import { HelloResolver } from "./resolvers/hello";
 import { UserResolver } from "./resolvers/user";
@@ -26,7 +19,7 @@ async function main() {
 
   const conn = await createConnection({
     type: "postgres",
-    url: DATABASE_URL,
+    url: CONFIG.DATABASE_URL,
     logging: true,
     migrations: [path.join(__dirname, "migrations", "*")],
     entities: [User],
@@ -34,14 +27,14 @@ async function main() {
   await conn.runMigrations();
 
   const redis = new IORedis({
-    host: REDIS_HOST,
-    port: REDIS_PORT,
+    host: CONFIG.REDIS_HOST,
+    port: Number(CONFIG.REDIS_PORT),
   });
   app.use(
     session({
       store: new RedisStore({ client: redis }),
       saveUninitialized: false,
-      secret: SESSION_SECRET,
+      secret: CONFIG.SESSION_SECRET,
       resave: false, // redis supports touch
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
@@ -60,8 +53,10 @@ async function main() {
   });
   server.applyMiddleware({ app });
 
-  app.listen({ host: HOST, port: PORT }, () =>
-    console.log(`Listening on http://${HOST}:${PORT}${server.graphqlPath}`)
+  app.listen({ host: CONFIG.HOST, port: CONFIG.PORT }, () =>
+    console.log(
+      `Listening on http://${CONFIG.HOST}:${CONFIG.PORT}${server.graphqlPath}`
+    )
   );
 }
 

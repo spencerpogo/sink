@@ -1,7 +1,7 @@
 import fetch, { Response } from "node-fetch";
 import { stringify as querystringify } from "querystring";
 import { version as serverVersion } from "../package.json";
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./config.js";
+import { CONFIG } from "./config.js";
 
 const GITHUB_URL = "https://github.com";
 const GITHUB_API_URL = "https://api.github.com";
@@ -42,8 +42,8 @@ export async function tokenFromCode(
       ...UA,
     },
     body: JSON.stringify({
-      client_id: GITHUB_CLIENT_ID,
-      client_secret: GITHUB_CLIENT_SECRET,
+      client_id: CONFIG.GITHUB_CLIENT_ID,
+      client_secret: CONFIG.GITHUB_CLIENT_SECRET,
       code: githubCode,
     }),
   });
@@ -76,7 +76,7 @@ export function genGithubLoginURL(redirectUri: string, state: string) {
   return (
     `${GITHUB_URL}/login/oauth/authorize?` +
     querystringify({
-      client_id: GITHUB_CLIENT_ID,
+      client_id: CONFIG.GITHUB_CLIENT_ID,
       redirect_uri: redirectUri,
       scope: "", // no scope gives access to public information
       state,
