@@ -18,8 +18,8 @@ async function main() {
   const app = express();
 
   const conn = await createConnection({
-    type: "postgres",
-    url: CONFIG.DATABASE_URL,
+    type: "better-sqlite3",
+    database: CONFIG.DATABASE_FILENAME,
     logging: true,
     migrations: [path.join(__dirname, "migrations", "*")],
     entities: [User],

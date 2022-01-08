@@ -1,7 +1,5 @@
 {
-  "type": "postgres",
-  "username": "sink",
-  "password": "cool",
+  "type": "better-sqlite3",
   "entities": ["src/models/*.ts"],
   "migrations": ["src/migrations/*.ts"],
   "cli": {
