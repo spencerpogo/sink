@@ -12,6 +12,7 @@ export REDIS_HOST=localhost
 export REDIS_PORT=6379
 export GITHUB_CLIENT_ID=xxx
 export GITHUB_CLIENT_SECRET=xxx
+export DATABASE_FILENAME=./db.sqlite
 
 TYPEORM_CONNECTION=better-sqlite3
 TYPEORM_DATABASE=./db.sqlite
@@ -19,6 +20,7 @@ TYPEORM_SYNCHRONIZE=false
 TYPEORM_LOGGING=true
 TYPEORM_ENTITIES=dist/src/models/*.js
 TYPEORM_MIGRATIONS=dist/src/migrations/*.js
+TYPEORM_MIGRATIONS_DIR=src/migrations
 
 #export TYPEORM_HOST=localhost
 #export TYPEORM_USERNAME=root
