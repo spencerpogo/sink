@@ -21,6 +21,7 @@ async function main() {
     type: "better-sqlite3",
     database: CONFIG.DATABASE_FILENAME,
     logging: true,
+    synchronize: false,
     migrations: [path.join(__dirname, "migrations", "*")],
     entities: [User],
   });
