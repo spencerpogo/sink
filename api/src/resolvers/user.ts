@@ -6,7 +6,6 @@ import {
   ObjectType,
   Query,
   Resolver,
-  UseMiddleware,
 } from "type-graphql";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -15,7 +14,7 @@ import {
   LoginError,
   tokenFromCode,
 } from "../githubAuth.js";
-import { isAuth } from "../middleware/isAuth";
+import { isAuthed } from "../middleware/isAuth.js";
 import { User } from "../models/User";
 import { MyContext } from "../types";
 
@@ -83,9 +82,9 @@ export class UserResolver {
     return { user: newUser };
   }
 
-  @Query(() => User)
-  @UseMiddleware(isAuth)
-  async me(@Ctx() { req }: MyContext): Promise<User> {
-    return User.findOneOrFail(req.session.userId);
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
+    if (!isAuthed(ctx)) return undefined;
+    return User.findOne(ctx.req.session.userId);
   }
 }

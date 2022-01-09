@@ -40,7 +40,7 @@ export type Query = {
   __typename?: 'Query';
   greet: Hello;
   genGitHubLoginURL: Scalars['String'];
-  me: User;
+  me?: Maybe<User>;
 };
 
 
@@ -92,10 +92,10 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: (
+  & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'name'>
-  ) }
+  )> }
 );
 
 
