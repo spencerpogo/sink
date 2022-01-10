@@ -8,7 +8,6 @@ import {
   Resolver,
 } from "type-graphql";
 import { v4 as uuidv4 } from "uuid";
-import { boolean } from "zod";
 import {
   genGithubLoginURL,
   getGitHubInfo,
@@ -83,7 +82,7 @@ export class UserResolver {
     return { user: newUser };
   }
 
-  @Mutation(() => boolean)
+  @Mutation(() => Boolean)
   async logout(@Ctx() ctx: MyContext): Promise<boolean> {
     delete ctx.req.session.authState;
     delete ctx.req.session.userId;
