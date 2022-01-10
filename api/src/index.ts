@@ -8,7 +8,9 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CONFIG } from "./config.js";
+import { Event } from "./models/Event.js";
 import { User } from "./models/User";
+import { EventResolver } from "./resolvers/event.js";
 import { HelloResolver } from "./resolvers/hello";
 import { UserResolver } from "./resolvers/user";
 
@@ -23,7 +25,7 @@ async function main() {
     logging: true,
     synchronize: false,
     migrations: [path.join(__dirname, "migrations", "*")],
-    entities: [User],
+    entities: [User, Event],
   });
   await conn.runMigrations();
 
@@ -45,7 +47,7 @@ async function main() {
   );
 
   const schema = await buildSchema({
-    resolvers: [HelloResolver, UserResolver],
+    resolvers: [HelloResolver, UserResolver, EventResolver],
   });
   const server = new ApolloServer({
     schema,

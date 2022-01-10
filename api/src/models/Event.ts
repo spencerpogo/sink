@@ -3,25 +3,26 @@ import {
   BaseEntity,
   Column,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Event } from "./Event.js";
+import { User } from "./User.js";
 
 @Entity()
 @ObjectType()
-export class User extends BaseEntity {
+export class Event extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
 
-  @Column({ unique: true })
-  githubId: number;
+  @ManyToOne(() => User, (user) => user.events)
+  user: User;
 
-  @Column({ unique: true })
+  @Column()
   @Field()
   name: string;
 
-  @OneToMany(() => Event, (event) => event.user)
-  events: Event[];
+  @Column({ type: "datetime" })
+  @Field()
+  start: Date;
 }

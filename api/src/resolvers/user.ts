@@ -6,6 +6,7 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -14,7 +15,8 @@ import {
   LoginError,
   tokenFromCode,
 } from "../githubAuth.js";
-import { isAuthed } from "../middleware/isAuth.js";
+import { isAuthed, mustAuth } from "../middleware/isAuth.js";
+import { Event } from "../models/Event.js";
 import { User } from "../models/User";
 import { MyContext } from "../types";
 
@@ -93,5 +95,12 @@ export class UserResolver {
   async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
     if (!isAuthed(ctx)) return undefined;
     return User.findOne(ctx.req.session.userId);
+  }
+
+  @Query(() => [Event])
+  @UseMiddleware(mustAuth)
+  async myEvents(@Ctx() ctx: MyContext): Promise<Event[]> {
+    // TODO: Implement pagination
+    return await Event.find({ where: { user: ctx.req.session.userId } });
   }
 }
