@@ -1,5 +1,6 @@
-import { Text } from "@chakra-ui/react";
+import { Center, Text } from "@chakra-ui/react";
 import Landing from "../components/Landing";
+import LogoutButton from "../components/LogoutButton";
 import { useMeQuery } from "../generated/graphql";
 
 export function Index() {
@@ -9,7 +10,13 @@ export function Index() {
   if (error) return <Text>Error: {String(error.message)}</Text>;
 
   if (data?.me?.name) {
-    return <Text>Hello {data.me.name}</Text>;
+    // graphic design is my passion
+    return (
+      <Center>
+        <Text>Hello {data.me.name}</Text>
+        <LogoutButton />
+      </Center>
+    );
   }
 
   return <Landing />;
