@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
+import { useEffect, useState } from "react";
 import { useGitHubLoginMutation } from "../generated/graphql";
 
 function Error({ children }) {
@@ -7,9 +8,23 @@ function Error({ children }) {
 }
 
 function CallbackHandler() {
+  const {
+    query: { code, state },
+  } = useRouter();
+  const [didCall, setDidCall] = useState(false);
   const [githubLogin, { data, loading, error }] = useGitHubLoginMutation();
-  const router = useRouter();
-  const { code, state } = router.query;
+
+  useEffect(() => {
+    if (
+      !didCall &&
+      !loading &&
+      typeof code === "string" &&
+      typeof state === "string"
+    ) {
+      githubLogin({ variables: { code, state } });
+      setDidCall(true);
+    }
+  }, [didCall, loading, code, state, githubLogin]);
 
   if (error) {
     return <Error>{String(error.message)}</Error>;
@@ -21,13 +36,6 @@ function CallbackHandler() {
 
   if (data && data.githubLogin.user) {
     return <Text>Hi {String(data.githubLogin.user.name)}</Text>;
-  }
-
-  if ((!loading && typeof code === "string") || typeof state === "string") {
-    console.log("calling");
-    githubLogin({
-      variables: { code: code as string, state: state as string },
-    });
   }
 
   return <Text>Loading...</Text>;
