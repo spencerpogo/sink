@@ -18,7 +18,6 @@ export class EventResolver {
       start,
     });
     await e.save();
-    console.log({ e });
     return e;
   }
 }
