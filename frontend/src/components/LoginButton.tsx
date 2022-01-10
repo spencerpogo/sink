@@ -31,6 +31,7 @@ export function LoginButton() {
       }
       onClick={() => {
         if (data && data.genGitHubLoginURL) {
+          // no need to use router as this is an external URL (github.com)
           window.location.href = data.genGitHubLoginURL;
         }
       }}
