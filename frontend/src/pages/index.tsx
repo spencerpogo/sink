@@ -8,7 +8,7 @@ export function Index() {
   if (loading) return <></>;
   if (error) return <Text>Error: {String(error.message)}</Text>;
 
-  if (data && data.me.name) {
+  if (data?.me?.name) {
     return <Text>Hello {data.me.name}</Text>;
   }
 
