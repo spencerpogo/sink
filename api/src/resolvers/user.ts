@@ -8,6 +8,7 @@ import {
   Resolver,
   UseMiddleware,
 } from "type-graphql";
+import { getRepository } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import {
   genGithubLoginURL,
@@ -99,8 +100,23 @@ export class UserResolver {
 
   @Query(() => [Event])
   @UseMiddleware(mustAuth)
-  async myEvents(@Ctx() ctx: MyContext): Promise<Event[]> {
-    // TODO: Implement pagination
-    return await Event.find({ where: { user: ctx.req.session.userId } });
+  async myEvents(
+    @Ctx() ctx: MyContext,
+    @Arg("limit") limit: number,
+    @Arg("cursor") cursor: Date
+  ): Promise<Event[]> {
+    console.log({ c: cursor.toISOString() });
+    // todo: support multiple directions
+    const qb = getRepository(Event)
+      .createQueryBuilder("e")
+      .where("e.userId = :userId", { userId: ctx.req.session.userId })
+      .orderBy("start", "DESC")
+      .take(Math.min(limit, 50));
+
+    if (!isNaN(cursor as any)) {
+      qb.where("e.start > datetime(:cursor)", { cursor: cursor.toISOString() });
+    }
+
+    return await qb.getMany();
   }
 }
