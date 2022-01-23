@@ -10,6 +10,7 @@ import {
 } from "type-graphql";
 import { getRepository } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import { timestampToDate } from "../dates.js";
 import {
   genGithubLoginURL,
   getGitHubInfo,
@@ -92,6 +93,17 @@ export class UserResolver {
     return true;
   }
 
+  @Mutation(() => User)
+  async createUser(
+    @Ctx() ctx: MyContext,
+    @Arg("name") name: string
+  ): Promise<User> {
+    const u = User.create({ name, githubId: 0 });
+    await u.save();
+    ctx.req.session.userId = u.id;
+    return u;
+  }
+
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
     if (!isAuthed(ctx)) return undefined;
@@ -103,9 +115,10 @@ export class UserResolver {
   async myEvents(
     @Ctx() ctx: MyContext,
     @Arg("limit") limit: number,
-    @Arg("cursor") cursor: Date
+    @Arg("cursor", { nullable: true }) cursor: number
   ): Promise<Event[]> {
-    console.log({ c: cursor.toISOString() });
+    const cursorDate = timestampToDate(cursor);
+    console.log({ cursorDate });
     // todo: support multiple directions
     const qb = getRepository(Event)
       .createQueryBuilder("e")
@@ -113,8 +126,8 @@ export class UserResolver {
       .orderBy("start", "DESC")
       .take(Math.min(limit, 50));
 
-    if (!isNaN(cursor as any)) {
-      qb.where("e.start > datetime(:cursor)", { cursor: cursor.toISOString() });
+    if (!isNaN(cursor)) {
+      qb.where("e.start = :cursor", { cursor });
     }
 
     return await qb.getMany();

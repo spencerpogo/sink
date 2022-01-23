@@ -1,4 +1,5 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { dateToTimestamp } from "../dates.js";
 import { mustAuth } from "../middleware/isAuth.js";
 import { Event } from "../models/Event";
 import { MyContext } from "../types.js";
@@ -15,7 +16,7 @@ export class EventResolver {
     const e = Event.create({
       user: { id: ctx.req.session.userId },
       name,
-      start,
+      start: dateToTimestamp(start),
     });
     await e.save();
     return e;

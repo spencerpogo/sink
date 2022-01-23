@@ -22,7 +22,7 @@ export class Event extends BaseEntity {
   @Field()
   name: string;
 
-  @Column({ type: "datetime" })
-  @Field()
-  start: Date;
+  @Column({ type: "numeric" })
+  @Field(() => Date)
+  start: number;
 }
