@@ -6,23 +6,40 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { dateToTimestamp, timestampToDate } from "../dates.js";
 import { User } from "./User.js";
 
 @Entity()
-@ObjectType()
 export class Event extends BaseEntity {
   @PrimaryGeneratedColumn()
-  @Field()
   id: number;
 
   @ManyToOne(() => User, (user) => user.events)
   user: User;
 
   @Column()
-  @Field()
   name: string;
 
   @Column({ type: "numeric" })
-  @Field(() => Date)
   start: number;
+}
+
+@ObjectType()
+export class EventType {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field()
+  start: Date;
+}
+
+export function toEventType(e: Event): EventType {
+  return { ...e, start: timestampToDate(e.start) };
+}
+
+export function fromEventType(e: EventType): Event {
+  return Event.create({ ...e, start: dateToTimestamp(e.start) });
 }

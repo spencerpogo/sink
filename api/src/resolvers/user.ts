@@ -18,7 +18,7 @@ import {
   tokenFromCode,
 } from "../githubAuth.js";
 import { isAuthed, mustAuth } from "../middleware/isAuth.js";
-import { Event } from "../models/Event.js";
+import { EventType } from "../models/Event.js";
 import { User } from "../models/User";
 import { MyContext } from "../types";
 
@@ -110,7 +110,7 @@ export class UserResolver {
     return User.findOne(ctx.req.session.userId);
   }
 
-  @Query(() => [Event])
+  @Query(() => [EventType])
   @UseMiddleware(mustAuth)
   async myEvents(
     @Ctx() ctx: MyContext,
