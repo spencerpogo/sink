@@ -1,5 +1,7 @@
 # sink
 
+[![wakatime](https://wakatime.com/badge/github/Scoder12/sink.svg)](https://wakatime.com/badge/github/Scoder12/sink)
+
 Work-in-progress web app for time tracking.
 
 It should:
