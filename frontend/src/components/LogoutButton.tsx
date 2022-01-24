@@ -1,19 +1,17 @@
 import { Button, Icon, Spinner } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 import { GoSignOut } from "react-icons/go";
 import { useLogoutMutation } from "../generated/graphql";
 
 export function LogoutButton() {
   const [logout, { data, loading }] = useLogoutMutation();
-  const router = useRouter();
 
   // no need to handle errors -> they'll just be a no-op
   useEffect(() => {
     if (!loading && data?.logout) {
-      router.push("/");
+      window.location.href = "/";
     }
-  }, [loading, data, router]);
+  }, [loading, data]);
 
   return (
     <Button
