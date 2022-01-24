@@ -37,6 +37,7 @@ export class EventResolver {
     @Arg("limit") limit: number,
     @Arg("cursor", { nullable: true }) cursor: Date
   ): Promise<EventType[]> {
+    // Sorts from newest to oldest
     // todo: support multiple directions
     const qb = getRepository(Event)
       .createQueryBuilder("e")
@@ -46,8 +47,7 @@ export class EventResolver {
 
     if (cursor) {
       const cursorTs = dateToTimestamp(cursor);
-      console.log({ cursor, cursorTs, nan: isNaN(cursorTs) });
-      if (!isNaN(cursorTs)) qb.where("e.start > :cursor", { cursor: cursorTs });
+      if (!isNaN(cursorTs)) qb.where("e.start < :cursor", { cursor: cursorTs });
     }
 
     return (await qb.getMany()).map((e) => toEventType(e));
