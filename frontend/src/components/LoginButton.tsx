@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { GoMarkGithub } from "react-icons/go";
 import { useGenGitHubLoginUrlLazyQuery } from "../generated/graphql";
 
 export function LoginButton() {
@@ -18,7 +19,10 @@ export function LoginButton() {
     <p>Oops, an error occurred: {String(error)}</p>
   ) : (
     <button
-      className=""
+      className={
+        "text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5" +
+        " text-center inline-flex items-center"
+      }
       disabled={loading}
       onClick={() => {
         if (data && data.genGitHubLoginURL) {
@@ -27,6 +31,7 @@ export function LoginButton() {
         }
       }}
     >
+      <GoMarkGithub className="mr-2 w-8 h-8" />
       Continue with GitHub
     </button>
   );
