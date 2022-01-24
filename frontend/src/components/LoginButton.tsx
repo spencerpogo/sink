@@ -18,6 +18,7 @@ export function LoginButton() {
     <p>Oops, an error occurred: {String(error)}</p>
   ) : (
     <button
+      className=""
       disabled={loading}
       onClick={() => {
         if (data && data.genGitHubLoginURL) {
