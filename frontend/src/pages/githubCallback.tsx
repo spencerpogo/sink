@@ -26,16 +26,18 @@ function CallbackHandler() {
     }
   }, [didCall, loading, code, state, githubLogin]);
 
+  useEffect(() => {
+    if (data && data.githubLogin.user) {
+      window.location.href = "/";
+    }
+  }, [data]);
+
   if (error) {
     return <Error>{String(error.message)}</Error>;
   }
 
   if (data && data.githubLogin.error) {
     return <Error>{String(data.githubLogin.error)}</Error>;
-  }
-
-  if (data && data.githubLogin.user) {
-    return <Text>Hi {String(data.githubLogin.user.name)}</Text>;
   }
 
   return <Text>Loading...</Text>;
