@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { AppProps } from "next/app";
-import { Chakra } from "../chakra";
+import "../styles/globals.css";
 
 const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_API_URL + "/graphql",
@@ -11,12 +11,9 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <Chakra cookies={pageProps.cookies}>
-        <Component {...pageProps} />
-      </Chakra>
+      <Component {...pageProps} />
     </ApolloProvider>
   );
 }
 
 export default MyApp;
-export { getServerSideProps } from "../chakra";

@@ -1,10 +1,9 @@
-import { Text } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useGitHubLoginMutation } from "../generated/graphql";
 
 function Error({ children }) {
-  return <Text>Something went wrong while logging you in: {children}</Text>;
+  return <p>Something went wrong while logging you in: {children}</p>;
 }
 
 function CallbackHandler() {
@@ -40,7 +39,7 @@ function CallbackHandler() {
     return <Error>{String(data.githubLogin.error)}</Error>;
   }
 
-  return <Text>Loading...</Text>;
+  return <p>Loading...</p>;
 }
 
 export default CallbackHandler;
