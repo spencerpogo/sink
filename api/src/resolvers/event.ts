@@ -1,4 +1,12 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
+import { getRepository } from "typeorm";
 import { dateToTimestamp } from "../dates.js";
 import { mustAuth } from "../middleware/isAuth.js";
 import { Event, EventType, toEventType } from "../models/Event";
@@ -20,5 +28,28 @@ export class EventResolver {
     });
     await e.save();
     return toEventType(e);
+  }
+
+  @Query(() => [EventType])
+  @UseMiddleware(mustAuth)
+  async myEvents(
+    @Ctx() ctx: MyContext,
+    @Arg("limit") limit: number,
+    @Arg("cursor", { nullable: true }) cursor: Date
+  ): Promise<EventType[]> {
+    // todo: support multiple directions
+    const qb = getRepository(Event)
+      .createQueryBuilder("e")
+      .where("e.userId = :userId", { userId: ctx.req.session.userId })
+      .orderBy("start", "DESC")
+      .take(Math.min(limit, 50));
+
+    if (cursor) {
+      const cursorTs = dateToTimestamp(cursor);
+      console.log({ cursor, cursorTs, nan: isNaN(cursorTs) });
+      if (!isNaN(cursorTs)) qb.where("e.start > :cursor", { cursor: cursorTs });
+    }
+
+    return (await qb.getMany()).map((e) => toEventType(e));
   }
 }

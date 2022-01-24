@@ -6,19 +6,15 @@ import {
   ObjectType,
   Query,
   Resolver,
-  UseMiddleware,
 } from "type-graphql";
-import { getRepository } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { dateToTimestamp } from "../dates.js";
 import {
   genGithubLoginURL,
   getGitHubInfo,
   LoginError,
   tokenFromCode,
 } from "../githubAuth.js";
-import { isAuthed, mustAuth } from "../middleware/isAuth.js";
-import { Event, EventType, toEventType } from "../models/Event.js";
+import { isAuthed } from "../middleware/isAuth.js";
 import { User } from "../models/User";
 import { MyContext } from "../types";
 
@@ -108,28 +104,5 @@ export class UserResolver {
   async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
     if (!isAuthed(ctx)) return undefined;
     return User.findOne(ctx.req.session.userId);
-  }
-
-  @Query(() => [EventType])
-  @UseMiddleware(mustAuth)
-  async myEvents(
-    @Ctx() ctx: MyContext,
-    @Arg("limit") limit: number,
-    @Arg("cursor", { nullable: true }) cursor: Date
-  ): Promise<EventType[]> {
-    // todo: support multiple directions
-    const qb = getRepository(Event)
-      .createQueryBuilder("e")
-      .where("e.userId = :userId", { userId: ctx.req.session.userId })
-      .orderBy("start", "DESC")
-      .take(Math.min(limit, 50));
-
-    if (cursor) {
-      const cursorTs = dateToTimestamp(cursor);
-      console.log({ cursor, cursorTs, nan: isNaN(cursorTs) });
-      if (!isNaN(cursorTs)) qb.where("e.start > :cursor", { cursor: cursorTs });
-    }
-
-    return (await qb.getMany()).map((e) => toEventType(e));
   }
 }
