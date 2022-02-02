@@ -1,0 +1,7 @@
+query myEvents($cursor: DateTime) {
+  myEvents(limit: 10, cursor: $cursor) {
+    id
+    name
+    start
+  }
+}

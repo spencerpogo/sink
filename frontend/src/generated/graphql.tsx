@@ -12,6 +12,16 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+};
+
+
+export type EventType = {
+  __typename?: 'EventType';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  start: Scalars['DateTime'];
 };
 
 export type Hello = {
@@ -27,8 +37,16 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createEvent: EventType;
   githubLogin: LoginResponse;
   logout: Scalars['Boolean'];
+  createUser: User;
+};
+
+
+export type MutationCreateEventArgs = {
+  start: Scalars['DateTime'];
+  name: Scalars['String'];
 };
 
 
@@ -37,11 +55,23 @@ export type MutationGithubLoginArgs = {
   code: Scalars['String'];
 };
 
+
+export type MutationCreateUserArgs = {
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  myEvents: Array<EventType>;
   greet: Hello;
   genGitHubLoginURL: Scalars['String'];
   me?: Maybe<User>;
+};
+
+
+export type QueryMyEventsArgs = {
+  cursor?: Maybe<Scalars['DateTime']>;
+  limit: Scalars['Float'];
 };
 
 
@@ -104,6 +134,19 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'name'>
+  )> }
+);
+
+export type MyEventsQueryVariables = Exact<{
+  cursor?: Maybe<Scalars['DateTime']>;
+}>;
+
+
+export type MyEventsQuery = (
+  { __typename?: 'Query' }
+  & { myEvents: Array<(
+    { __typename?: 'EventType' }
+    & Pick<EventType, 'id' | 'name' | 'start'>
   )> }
 );
 
@@ -243,3 +286,40 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MyEventsDocument = gql`
+    query myEvents($cursor: DateTime) {
+  myEvents(limit: 10, cursor: $cursor) {
+    id
+    name
+    start
+  }
+}
+    `;
+
+/**
+ * __useMyEventsQuery__
+ *
+ * To run a query within a React component, call `useMyEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyEventsQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useMyEventsQuery(baseOptions?: Apollo.QueryHookOptions<MyEventsQuery, MyEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyEventsQuery, MyEventsQueryVariables>(MyEventsDocument, options);
+      }
+export function useMyEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyEventsQuery, MyEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyEventsQuery, MyEventsQueryVariables>(MyEventsDocument, options);
+        }
+export type MyEventsQueryHookResult = ReturnType<typeof useMyEventsQuery>;
+export type MyEventsLazyQueryHookResult = ReturnType<typeof useMyEventsLazyQuery>;
+export type MyEventsQueryResult = Apollo.QueryResult<MyEventsQuery, MyEventsQueryVariables>;
