@@ -25,6 +25,11 @@ Frontend:
 - Typescript + React
 - Chakra UI
 
+## Design docs
+
+Some design docs are available in `api/docs/*.md` to explain some of the technical
+decisions made in this project and the rationale behind them.
+
 ## Roadmap:
 
 - [ ] MVP
