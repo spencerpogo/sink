@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { GoMarkGithub } from "react-icons/go";
-import { useGenGitHubLoginUrlLazyQuery } from "../generated/graphql";
+import { useGenGitHubLoginUrlLazyQuery } from "../../generated/graphql";
 
 export function LoginButton() {
   const [getLoginURL, { loading, data, error }] =
