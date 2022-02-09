@@ -1,5 +1,5 @@
 import Home from "../components/Home";
-import Landing from "../components/Landing";
+import Landing from "../components/landing/Landing";
 import { useMeQuery } from "../generated/graphql";
 
 export function Index() {
