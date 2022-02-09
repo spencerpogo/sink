@@ -1,4 +1,4 @@
-import Home from "../components/Home";
+import Home from "../components/home/Home";
 import Landing from "../components/landing/Landing";
 import { useMeQuery } from "../generated/graphql";
 

@@ -1,4 +1,4 @@
-import Header from "./Header";
+import Header from "../Header";
 import TasksList from "./TasksList";
 
 export default function Home({ name }: { name: string }) {

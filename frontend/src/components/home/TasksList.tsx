@@ -1,4 +1,4 @@
-import { useMyEventsQuery } from "../generated/graphql";
+import { useMyEventsQuery } from "../../generated/graphql";
 
 function Task({ name }: { name: string }) {
   // TODO make this more detailed
