@@ -66,7 +66,8 @@ TYPEORM_MIGRATIONS_DIR=src/migrations
 ```
 
 You'll need to fill in `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`, which you can
-[generate on GitHub.com](https://github.com/settings/apps).
+[generate on GitHub.com](https://github.com/settings/apps). For the "Callback URL",
+put `$FRONTEND_URL/githubCallback`.
 
 4. In one terminal, `yarn watch`, and in another `source .env && yarn dev`.
 
