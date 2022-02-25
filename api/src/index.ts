@@ -55,7 +55,10 @@ async function main() {
       req,
     }),
   });
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    cors: { origin: CONFIG.FRONTEND_URL, credentials: true },
+  });
 
   app.listen({ host: CONFIG.HOST, port: CONFIG.PORT }, () =>
     console.log(
