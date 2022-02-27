@@ -8,11 +8,11 @@
   #__next {
     @apply h-full;
     @apply bg-white text-black;
-    @apply dark:bg-gray-900 dark:text-white;
+    @apply dark:bg-gray-800 dark:text-white;
   }
 
   .nav {
     @apply bg-gray-200;
-    @apply dark:bg-gray-800;
+    @apply dark:bg-gray-900;
   }
 }
