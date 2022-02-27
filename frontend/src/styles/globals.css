@@ -15,4 +15,8 @@
     @apply bg-gray-200;
     @apply dark:bg-gray-900;
   }
+
+  input[type="text"] {
+    @apply dark:bg-gray-900;
+  }
 }
