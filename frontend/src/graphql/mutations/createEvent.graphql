@@ -1,0 +1,5 @@
+mutation CreateEvent($name: String!, $start: DateTime!) {
+  createEvent(name: $name, start: $start) {
+    id
+  }
+}

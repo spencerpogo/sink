@@ -1,8 +1,16 @@
 import { GoPlay } from "react-icons/go";
+import { useCreateEventMutation } from "../../generated/graphql";
 
 export default function CreateTask() {
+  const [createEvent, { loading, error }] = useCreateEventMutation();
+
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        createEvent();
+      }}
+    >
       <div className="flex">
         <input
           type="text"
