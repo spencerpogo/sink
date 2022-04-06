@@ -6,8 +6,8 @@ export default function Home({ name }: { name: string }) {
   return (
     <>
       <Header name={name} />
-      <main className="ml-2">
-        <div>
+      <main className="mx-5">
+        <div className="my-3">
           <CreateTask />
         </div>
         <div>
