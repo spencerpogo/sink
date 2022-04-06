@@ -11,7 +11,11 @@ export function LogoutButton() {
     }
   }, [loading, data]);
 
-  return <button onClick={() => logout()}>Logout</button>;
+  return (
+    <button className="underline" onClick={() => logout()}>
+      Logout
+    </button>
+  );
 }
 
 export default LogoutButton;

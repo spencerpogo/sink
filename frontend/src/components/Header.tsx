@@ -1,3 +1,5 @@
+import LogoutButton from "./LogoutButton";
+
 export default function Header({ name }: { name: string }) {
   return (
     <nav className="nav rounded py-2.5 px-2 mb-2">
@@ -8,7 +10,8 @@ export default function Header({ name }: { name: string }) {
         </div>
         <div>
           {/* TODO: This should be a link to accounts page */}
-          <span className="text-bold">{name}</span>
+          <span className="text-bold mr-2">{name}</span>
+          <LogoutButton />
         </div>
       </div>
     </nav>
